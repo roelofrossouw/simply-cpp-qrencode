@@ -33,6 +33,24 @@ code.version(); code.size(); code.dark(x, y);      // 1 to 40, modules a side, o
 - Both keep a quiet zone of 4 light modules around the code, as the standard
   asks (a parameter, for tight layouts).
 
+## The qrencode program
+
+The package installs `qrencode` and its man page. It takes libqrencode's `qrencode` command line
+for what sc-qrencode can do, so scripts written for either work with it:
+
+```bash
+qrencode -o invoice.png -s 8 "https://example.com/invoice/123"   # a PNG, 8 pixels a module
+qrencode -t SVG -l H -r contact.vcf -o contact.svg                # an SVG of a file, level H
+echo -n "WIFI:S:Home;T:WPA;P:secret;;" | qrencode -t UTF8         # in the terminal
+qrencode -o - "https://example.com" > code.png                    # to standard output
+```
+
+It has `-o`, `-r`, `-s`, `-l`, `-m`, `-d` (an SVG's printed size), `-t` (`PNG`, `SVG`,
+`UTF8`, `UTF8i`, `ASCII`, `ASCIIi`) and `-8`, with libqrencode's defaults (level L, 3 pixels a
+module, a margin of 4, 72 dpi, PNG). Its other options (`-v`, `-S`, `-M`, `-k`, colours) and
+types (EPS, XPM, ANSI) are reported as unknown, as is `-V` (use `--version`). Installed in `/usr/local/bin`,
+it comes before a distribution's libqrencode `qrencode` on the PATH.
+
 ## Licences
 
 sc-qrencode is Apache-2.0. The encoding is Project Nayuki's

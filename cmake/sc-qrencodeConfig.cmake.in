@@ -3,7 +3,7 @@
 include("${CMAKE_CURRENT_LIST_DIR}/SimplyCppFunctions.cmake")
 include(CMakeFindDependencyMacro)
 
-find_or_install_package(sc-core simply-cpp-dev simply-cpp 1.20.0)
+find_or_install_package(sc-core simply-cpp-dev simply-cpp 1.24.0)
 # The static library links zlib.
 find_or_install_package(ZLIB zlib1g-dev zlib)
 

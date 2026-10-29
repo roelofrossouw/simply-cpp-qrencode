@@ -8,8 +8,8 @@ option(SC_QRENCODE_BUILD_TESTS "Build simply-cpp-qrencode tests" ${PROJECT_IS_TO
 get_sc_version()
 message(STATUS "SimplyCPP ${SC_MODULE} Version: ${SC_VERSION}")
 
-# sc::distance for an SVG's size; zlib for the PNG's pixels.
-find_or_install_package(sc-core simply-cpp-dev simply-cpp 1.20.0)
+# sc::distance for an SVG's size; sc::params' man pages (1.24.0) for qrencode; zlib for the PNG's pixels.
+find_or_install_package(sc-core simply-cpp-dev simply-cpp 1.24.0)
 find_or_install_package(ZLIB zlib1g-dev zlib)
 
 set(SOURCE_OBJECTS)
@@ -41,4 +41,12 @@ endif ()
 
 add_sc_example(sc-qrencode-demo)
 
-package_sc_module(DEV_DEPENDS "simply-cpp-dev (>= 1.20.0~)" zlib1g-dev)
+# qrencode, the program: libqrencode's qrencode command line, for what sc-qrencode can do.
+add_executable(qrencode apps/qrencode.cpp)
+target_link_libraries(qrencode PRIVATE sc::sc-qrencode-shared)
+target_compile_definitions(qrencode PRIVATE SC_QRENCODE_VERSION="${SC_VERSION}")
+sc_program_info(qrencode)
+install(TARGETS qrencode RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime)
+sc_man_page(qrencode EXTRA ${CMAKE_CURRENT_SOURCE_DIR}/man/qrencode.md COMPONENT runtime)
+
+package_sc_module(DEV_DEPENDS "simply-cpp-dev (>= 1.24.0~)" zlib1g-dev)
