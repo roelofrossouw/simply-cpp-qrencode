@@ -1,0 +1,10 @@
+simply-cpp-qrencode
+Copyright 2026 Roelof Rossouw
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Includes Project Nayuki's QR Code generator library (C++), third_party/qrcodegen,
+from https://github.com/nayuki/QR-Code-generator at commit 3c6d0b3cefb4e049dc337e82237c9644399716a8:
+Copyright (c) Project Nayuki. MIT License (the notice is in each of its files).
+
+Uses zlib (zlib License), linked from the system.

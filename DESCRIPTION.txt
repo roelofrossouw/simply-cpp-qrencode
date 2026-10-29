@@ -1,0 +1,1 @@
+QR codes for simply-cpp: text or bytes to SVG or PNG, with no image library
