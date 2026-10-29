@@ -1,25 +1,37 @@
+# EXIT STATUS
+0 when the code was shown or written, 1 when it couldn't be (no data, an invalid type, a file that can't be read or
+written), and 2 for a mistake in the options.
+
 # EXAMPLES
+A link, shown in the terminal:
+```
+qrencode "https://example.com"
+```
+From a program, shown in the terminal:
+```
+echo -n "WIFI:S:Home;T:WPA;P:secret;;" | qrencode
+```
 A link as a PNG, 8 pixels a module:
 ```
 qrencode -o invoice.png -s 8 "https://example.com/invoice/123"
 ```
 An SVG of a file's contents, with the highest error correction:
 ```
-qrencode -t SVG -l H -r contact.vcf -o contact.svg
-```
-From a program, shown in the terminal:
-```
-echo -n "WIFI:S:Home;T:WPA;P:secret;;" | qrencode -t UTF8
+qrencode -l H -r contact.vcf -o contact.svg
 ```
 A PNG to standard output, for a web server:
 ```
-qrencode -o - "https://example.com" > code.png
+qrencode -t PNG -o - "https://example.com" > code.png
 ```
 
 # NOTES
+Run without anything to encode (no STRING, no `-r`, nothing piped in), it shows its help. The code goes to the terminal
+as text unless `-o` names a file, whose name gives the type: `.png` or `.svg`; any other name is an invalid type unless
+`-t` says which.
+
 It takes libqrencode's qrencode options for what sc-qrencode can do: `-o`, `-r`, `-s`, `-l`, `-m`, `-d`, `-t`, `-8` and
-the data as an argument or on standard input, with the same defaults (level L, 3 pixels a module, a margin of 4, 72 dpi,
-PNG). Its other options (`-v`, `-S`, `-M`, `-k`, `-i`, `--foreground`, `--background`, `--rle`) and its EPS, XPM and ANSI
+the data as an argument or on standard input, with the same defaults (level L, 3 pixels a module, a margin of 4, 72 dpi).
+Unlike libqrencode's, it shows the code in the terminal by default instead of needing `-o` for a PNG. Its other options (`-v`, `-S`, `-M`, `-k`, `-i`, `--foreground`, `--background`, `--rle`) and its EPS, XPM and ANSI
 types aren't there: they are reported as unknown, as is `-V`: use `--version`.
 
 The encoding chooses the smallest version that holds the data and raises the error correction when a higher level still

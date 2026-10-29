@@ -1,15 +1,22 @@
 // qrencode, the program: a QR code of a string, a file or standard input, as PNG, SVG or text, with
-// libqrencode's command line where sc-qrencode can do what it asks.
+// libqrencode's command line where sc-qrencode can do what it asks. It shows the code in the
+// terminal unless told to write a file, whose name gives the type; with nothing to encode it shows
+// its help.
 
 #include <sc_qrencode.h>
 
 #include <params.h>
 
+#include <algorithm>
+#include <cctype>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <iterator>
 #include <map>
 #include <sstream>
+
+#include <unistd.h>
 
 namespace {
     // ASCII: two characters a module, a line a row, the quiet zone around. inverted: light
@@ -38,18 +45,30 @@ namespace {
     }
 
     std::string read_all(std::istream &in) { return {std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>()}; }
+
+    // The type a file's name asks for: .png or .svg, in any case.
+    std::string type_of(const std::string &file) {
+        auto extension = std::filesystem::path{file}.extension().string();
+        std::ranges::transform(extension, extension.begin(), [](const unsigned char c) { return std::tolower(c); });
+        if (extension == ".png") return "PNG";
+        if (extension == ".svg") return "SVG";
+        throw std::invalid_argument("invalid type for " + file + ": name it .png or .svg, or give the type with -t");
+    }
 }
 
 int main(int argc, char **argv) {
     const sc::params args{argc, argv, {
         {"name", "qrencode"},
-        {"description", "Encodes data in a QR code and writes it as a PNG, an SVG or text. It takes libqrencode's qrencode "
-                        "options for what sc-qrencode can do, so scripts written for either work with it."},
+        {"description", "Encodes data in a QR code and shows it in the terminal, or writes it as a PNG or an SVG. It takes "
+                        "libqrencode's qrencode options for what sc-qrencode can do."},
         {"version", SC_QRENCODE_VERSION},
-        {"epilog", "Without STRING or --read-from it reads standard input. A PNG needs --output; the other types go to "
-                   "standard output unless --output names a file. Data holding a NUL byte is encoded as bytes, as with --8bit."},
+        {"epilog", "Without STRING or --read-from it reads standard input, when something is piped in; without any of "
+                   "them it shows this help. The code goes to the terminal as text (UTF8) unless --output names a file: "
+                   "then its name gives the type, .png or .svg, unless --type says it. Data holding a NUL byte is encoded "
+                   "as bytes, as with --8bit."},
         {"options", {
-            {"output", {{"short", "o"}, {"value", "FILENAME"}, {"help", "write the image to FILENAME (- for standard output)"}}},
+            {"output", {{"short", "o"}, {"value", "FILENAME"},
+                        {"help", "write the code to FILENAME, a .png or .svg (- for standard output, as text unless --type says otherwise)"}}},
             {"read-from", {{"short", "r"}, {"value", "FILENAME"}, {"help", "read the data from FILENAME"}}},
             {"size", {{"short", "s"}, {"type", "integer"}, {"value", "NUMBER"}, {"default", 3},
                       {"help", "a module's size in pixels (1 to 100); an SVG's with --dpi"}}},
@@ -60,12 +79,17 @@ int main(int argc, char **argv) {
                         {"help", "the quiet zone around the code, in modules"}}},
             {"dpi", {{"short", "d"}, {"type", "integer"}, {"value", "NUMBER"}, {"default", 72},
                      {"help", "pixels an inch, for an SVG's printed size"}}},
-            {"type", {{"short", "t"}, {"value", "TYPE"}, {"default", "PNG"}, {"choices", {"PNG", "SVG", "UTF8", "UTF8i", "ASCII", "ASCIIi"}},
+            {"type", {{"short", "t"}, {"value", "TYPE"}, {"choices", {"PNG", "SVG", "UTF8", "UTF8i", "ASCII", "ASCIIi"}},
                       {"help", "the output: PNG (1-bit), SVG, UTF8 (half blocks for a dark terminal; UTF8i for a light one), "
-                               "ASCII (# for dark; ASCIIi inverted)"}}},
+                               "ASCII (# for dark; ASCIIi inverted) (default: from --output's name, else UTF8)"}}},
             {"8bit", {{"short", "8"}, {"type", "boolean"}, {"help", "encode the data as bytes, as they are"}}}}},
         {"positional", {
             {"string", {{"required", false}, {"help", "the data (default: standard input)"}}}}}}};
+    // Nothing to encode and nothing piped in: what it does, rather than waiting for the keyboard.
+    if (argc == 1 && isatty(STDIN_FILENO)) {
+        std::cout << args.help() << std::flush;
+        return 0;
+    }
     try {
         std::string data;
         if (const auto *text = args.lookup("string")) {
@@ -75,6 +99,7 @@ int main(int argc, char **argv) {
             if (!in) throw std::runtime_error("can't read " + file->get<std::string>());
             data = read_all(in);
         } else {
+            if (isatty(STDIN_FILENO)) throw std::runtime_error("no data to encode: give it as STRING, with -r FILENAME, or pipe it in");
             data = read_all(std::cin);
         }
         if (data.empty()) throw std::runtime_error("no data to encode");
@@ -88,7 +113,10 @@ int main(int argc, char **argv) {
         const auto margin = args.as<int>("margin"), size = args.as<int>("size"), dpi = args.as<int>("dpi");
         if (margin < 0 || margin > 100) throw std::invalid_argument("--margin is 0 to 100");
         if (dpi < 1) throw std::invalid_argument("--dpi must be at least 1");
-        const auto type = args.as<std::string>("type");
+        const auto *output = args.lookup("output");
+        const auto file = output ? output->get<std::string>() : std::string{};
+        const bool to_file = !file.empty() && file != "-";
+        const auto type = args.lookup("type") ? args.as<std::string>("type") : to_file ? type_of(file) : std::string{"UTF8"};
         std::string out;
         if (type == "PNG") {
             out = code.png(size, margin);
@@ -104,10 +132,8 @@ int main(int argc, char **argv) {
             out = ascii(code, margin, type == "ASCIIi");
         }
 
-        const auto *output = args.lookup("output");
-        const auto file = output ? output->get<std::string>() : std::string{};
-        if (file.empty() || file == "-") {
-            if (!output && type == "PNG") throw std::runtime_error("no output file given (-o FILENAME, or -o - for standard output)");
+        if (!to_file) {
+            if (type == "PNG" && isatty(STDOUT_FILENO)) throw std::runtime_error("a PNG isn't for the terminal: write it to a file with -o, or redirect it");
             std::cout << out;
         } else {
             std::ofstream to{file, std::ios::binary | std::ios::trunc};

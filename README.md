@@ -35,19 +35,24 @@ code.version(); code.size(); code.dark(x, y);      // 1 to 40, modules a side, o
 
 ## The qrencode program
 
-The package installs `qrencode` and its man page. It takes libqrencode's `qrencode` command line
-for what sc-qrencode can do, so scripts written for either work with it:
+The package installs `qrencode` and its man page. Give it something to encode and it shows the
+code in the terminal; name an output file and it writes a PNG or an SVG, as the name says:
 
 ```bash
+qrencode "https://example.com"                                    # in the terminal
+echo -n "WIFI:S:Home;T:WPA;P:secret;;" | qrencode                 # piped in, in the terminal
 qrencode -o invoice.png -s 8 "https://example.com/invoice/123"   # a PNG, 8 pixels a module
-qrencode -t SVG -l H -r contact.vcf -o contact.svg                # an SVG of a file, level H
-echo -n "WIFI:S:Home;T:WPA;P:secret;;" | qrencode -t UTF8         # in the terminal
-qrencode -o - "https://example.com" > code.png                    # to standard output
+qrencode -l H -r contact.vcf -o contact.svg                       # an SVG of a file, level H
+qrencode -t PNG -o - "https://example.com" > code.png             # a PNG to standard output
 ```
 
-It has `-o`, `-r`, `-s`, `-l`, `-m`, `-d` (an SVG's printed size), `-t` (`PNG`, `SVG`,
-`UTF8`, `UTF8i`, `ASCII`, `ASCIIi`) and `-8`, with libqrencode's defaults (level L, 3 pixels a
-module, a margin of 4, 72 dpi, PNG). Its other options (`-v`, `-S`, `-M`, `-k`, colours) and
+Without anything to encode (no STRING, no `-r` and nothing piped in) it shows its help. An
+output file's name gives the type, `.png` or `.svg`; another name is an invalid type unless `-t`
+says which. It takes libqrencode's `qrencode` options for what sc-qrencode can do: `-o`, `-r`,
+`-s`, `-l`, `-m`, `-d` (an SVG's printed size), `-t` (`PNG`, `SVG`, `UTF8`, `UTF8i`, `ASCII`,
+`ASCIIi`) and `-8`, with libqrencode's defaults (level L, 3 pixels a module, a margin of 4,
+72 dpi). Unlike libqrencode's, it shows the code in the terminal rather than needing `-o` for a
+PNG. Its other options (`-v`, `-S`, `-M`, `-k`, colours) and
 types (EPS, XPM, ANSI) are reported as unknown, as is `-V` (use `--version`). The package installs it as
 `/usr/bin/qrencode`, the same file as Ubuntu's `qrencode` package (libqrencode's), so it conflicts
 with and replaces that package: installing ours removes theirs.
