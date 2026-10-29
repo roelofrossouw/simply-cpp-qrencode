@@ -48,8 +48,9 @@ qrencode -o - "https://example.com" > code.png                    # to standard 
 It has `-o`, `-r`, `-s`, `-l`, `-m`, `-d` (an SVG's printed size), `-t` (`PNG`, `SVG`,
 `UTF8`, `UTF8i`, `ASCII`, `ASCIIi`) and `-8`, with libqrencode's defaults (level L, 3 pixels a
 module, a margin of 4, 72 dpi, PNG). Its other options (`-v`, `-S`, `-M`, `-k`, colours) and
-types (EPS, XPM, ANSI) are reported as unknown, as is `-V` (use `--version`). Installed in `/usr/local/bin`,
-it comes before a distribution's libqrencode `qrencode` on the PATH.
+types (EPS, XPM, ANSI) are reported as unknown, as is `-V` (use `--version`). The package installs it as
+`/usr/bin/qrencode`, the same file as Ubuntu's `qrencode` package (libqrencode's): install one or
+the other.
 
 ## Licences
 
