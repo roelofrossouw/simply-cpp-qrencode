@@ -49,4 +49,8 @@ sc_program_info(qrencode)
 install(TARGETS qrencode RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime)
 sc_man_page(qrencode EXTRA ${CMAKE_CURRENT_SOURCE_DIR}/man/qrencode.md COMPONENT runtime)
 
-package_sc_module(DEV_DEPENDS "simply-cpp-dev (>= 1.24.0~)" zlib1g-dev)
+# Our qrencode is /usr/bin/qrencode and its man page, the same files as Ubuntu's qrencode package
+# (libqrencode's command): installing ours removes theirs.
+set(CPACK_DEBIAN_RUNTIME_PACKAGE_CONFLICTS "qrencode")
+package_sc_module(DEV_DEPENDS "simply-cpp-dev (>= 1.24.0~)" zlib1g-dev
+        REPLACES qrencode)
