@@ -33,29 +33,28 @@ code.version(); code.size(); code.dark(x, y);      // 1 to 40, modules a side, o
 - Both keep a quiet zone of 4 light modules around the code, as the standard
   asks (a parameter, for tight layouts).
 
-## The qrencode program
+## The qrcode program
 
-The package installs `qrencode` and its man page. Give it something to encode and it shows the
+The package installs `qrcode` and its man page. Give it something to encode and it shows the
 code in the terminal; name an output file and it writes a PNG or an SVG, as the name says:
 
 ```bash
-qrencode "https://example.com"                                    # in the terminal
-echo -n "WIFI:S:Home;T:WPA;P:secret;;" | qrencode                 # piped in, in the terminal
-qrencode -o invoice.png -s 8 "https://example.com/invoice/123"   # a PNG, 8 pixels a module
-qrencode -l H -r contact.vcf -o contact.svg                       # an SVG of a file, level H
-qrencode -t PNG -o - "https://example.com" > code.png             # a PNG to standard output
+qrcode "https://example.com"                                      # in the terminal
+echo -n "WIFI:S:Home;T:WPA;P:secret;;" | qrcode                   # piped in, in the terminal
+qrcode -o invoice.png -s 8 "https://example.com/invoice/123"      # a PNG, 8 pixels a module
+qrcode -l H -r contact.vcf -o contact.svg                         # an SVG of a file, level H
+qrcode -t PNG -o - "https://example.com" > code.png               # a PNG to standard output
 ```
 
 Without anything to encode (no STRING, no `-r` and nothing piped in) it shows its help. An
 output file's name gives the type, `.png` or `.svg`; another name is an invalid type unless `-t`
-says which. It takes libqrencode's `qrencode` options for what sc-qrencode can do: `-o`, `-r`,
+says which. It takes libqrencode's `qrencode` options, by the same letters, for what sc-qrencode can do: `-o`, `-r`,
 `-s`, `-l`, `-m`, `-d` (an SVG's printed size), `-t` (`PNG`, `SVG`, `UTF8`, `UTF8i`, `ASCII`,
 `ASCIIi`) and `-8`, with libqrencode's defaults (level L, 3 pixels a module, a margin of 4,
 72 dpi). Unlike libqrencode's, it shows the code in the terminal rather than needing `-o` for a
-PNG. Its other options (`-v`, `-S`, `-M`, `-k`, colours) and
-types (EPS, XPM, ANSI) are reported as unknown, as is `-V` (use `--version`). The package installs it as
-`/usr/bin/qrencode`, the same file as Ubuntu's `qrencode` package (libqrencode's), so it conflicts
-with and replaces that package: installing ours removes theirs.
+PNG. Its other options (`-v`, `-S`, `-M`, `-k`, colours) and types (EPS, XPM, ANSI) are
+reported as unknown, as is `-V` (use `--version`). It's named `qrcode` so it can be installed
+beside libqrencode's `qrencode` (Ubuntu's `qrencode` package); until 1.2.0 it was `qrencode`.
 
 ## Licences
 

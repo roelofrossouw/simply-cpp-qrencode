@@ -1,4 +1,4 @@
-// qrencode, the program: a QR code of a string, a file or standard input, as PNG, SVG or text, with
+// qrcode, the program: a QR code of a string, a file or standard input, as PNG, SVG or text, with
 // libqrencode's command line where sc-qrencode can do what it asks. It shows the code in the
 // terminal unless told to write a file, whose name gives the type; with nothing to encode it shows
 // its help.
@@ -58,9 +58,9 @@ namespace {
 
 int main(int argc, char **argv) {
     const sc::params args{argc, argv, {
-        {"name", "qrencode"},
+        {"name", "qrcode"},
         {"description", "Encodes data in a QR code and shows it in the terminal, or writes it as a PNG or an SVG. It takes "
-                        "libqrencode's qrencode options for what sc-qrencode can do."},
+                        "libqrencode's qrencode options, by the same letters, for what sc-qrencode can do."},
         {"version", SC_QRENCODE_VERSION},
         {"epilog", "Without STRING or --read-from it reads standard input, when something is piped in; without any of "
                    "them it shows this help. The code goes to the terminal as text (UTF8) unless --output names a file: "
@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
             if (!to) throw std::runtime_error("can't write " + file);
         }
     } catch (const std::exception &problem) {
-        std::cerr << "qrencode: " << problem.what() << '\n';
+        std::cerr << "qrcode: " << problem.what() << '\n';
         return 1;
     }
     return 0;

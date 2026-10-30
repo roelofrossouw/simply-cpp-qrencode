@@ -8,7 +8,7 @@ option(SC_QRENCODE_BUILD_TESTS "Build simply-cpp-qrencode tests" ${PROJECT_IS_TO
 get_sc_version()
 message(STATUS "SimplyCPP ${SC_MODULE} Version: ${SC_VERSION}")
 
-# sc::distance for an SVG's size; sc::params' man pages (1.24.0) for qrencode; zlib for the PNG's pixels.
+# sc::distance for an SVG's size; sc::params' man pages (1.24.0) for qrcode; zlib for the PNG's pixels.
 find_or_install_package(sc-core simply-cpp-dev simply-cpp 1.24.0)
 find_or_install_package(ZLIB zlib1g-dev zlib)
 
@@ -41,16 +41,13 @@ endif ()
 
 add_sc_example(sc-qrencode-demo)
 
-# qrencode, the program: libqrencode's qrencode command line, for what sc-qrencode can do.
-add_executable(qrencode apps/qrencode.cpp)
-target_link_libraries(qrencode PRIVATE sc::sc-qrencode-shared)
-target_compile_definitions(qrencode PRIVATE SC_QRENCODE_VERSION="${SC_VERSION}")
-sc_program_info(qrencode)
-install(TARGETS qrencode RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime)
-sc_man_page(qrencode EXTRA ${CMAKE_CURRENT_SOURCE_DIR}/man/qrencode.md COMPONENT runtime)
+# qrcode, the program: libqrencode's qrencode options, by the same letters, for what sc-qrencode can
+# do; named qrcode so it can be installed beside libqrencode's qrencode.
+add_executable(qrcode apps/qrcode.cpp)
+target_link_libraries(qrcode PRIVATE sc::sc-qrencode-shared)
+target_compile_definitions(qrcode PRIVATE SC_QRENCODE_VERSION="${SC_VERSION}")
+sc_program_info(qrcode)
+install(TARGETS qrcode RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime)
+sc_man_page(qrcode EXTRA ${CMAKE_CURRENT_SOURCE_DIR}/man/qrcode.md COMPONENT runtime)
 
-# Our qrencode is /usr/bin/qrencode and its man page, the same files as Ubuntu's qrencode package
-# (libqrencode's command): installing ours removes theirs.
-set(CPACK_DEBIAN_RUNTIME_PACKAGE_CONFLICTS "qrencode")
-package_sc_module(DEV_DEPENDS "simply-cpp-dev (>= 1.24.0~)" zlib1g-dev
-        REPLACES qrencode)
+package_sc_module(DEV_DEPENDS "simply-cpp-dev (>= 1.24.0~)" zlib1g-dev)
