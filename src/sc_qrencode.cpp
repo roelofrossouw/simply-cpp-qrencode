@@ -114,7 +114,10 @@ namespace sc::qr {
             const auto length = number(size->millimetres()) + "mm";
             out += R"( width=")" + length + R"(" height=")" + length + '"';
         }
-        out += R"( shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/><path fill="#000" d=")";
+        // The light square in the viewBox's own units, not 100%: readers that don't resolve percentages
+        // (sc::drawing's) would take it as 100 units.
+        out += R"( shape-rendering="crispEdges"><rect width=")" + std::to_string(whole) + R"(" height=")" + std::to_string(whole) +
+               R"(" fill="#fff"/><path fill="#000" d=")";
         // Each row's runs of dark modules as rectangles: "M4,4h7v1h-7z".
         for (int y = 0; y < size_; ++y) {
             for (int x = 0; x < size_;) {

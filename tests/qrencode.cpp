@@ -83,6 +83,7 @@ int main() {
         CHECK(plain.substr(0, plain.find('>')).find("width=") == string::npos); // no size of its own
         CHECK(plain.find("<path fill=\"#000\" d=\"M4,4h7v1h-7z") != string::npos); // the top-left finder's first row
         CHECK(plain.ends_with("</svg>\n"));
+        CHECK(plain.find("<rect width=\"29\" height=\"29\" fill=\"#fff\"/>") != string::npos); // the viewBox's size, not 100%
         const auto sized = hello.svg(sc::dist::mm(30), 2);
         CHECK(sized.find("viewBox=\"0 0 25 25\" width=\"30mm\" height=\"30mm\"") != string::npos);
         CHECK(hello.svg(sc::dist::inch(1)).find("width=\"25.4mm\"") != string::npos);
