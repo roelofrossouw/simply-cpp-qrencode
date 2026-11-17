@@ -10,14 +10,14 @@ zlib are all it needs.
 ```cpp
 #include <sc/qrencode/sc_qrencode.h>
 
-const sc::qr::code code{"https://example.com/invoice/123"};
+const sc::qrencode::code code{"https://example.com/invoice/123"};
 code.save_svg("invoice.svg", sc::dist::mm(30));    // 30 mm square, quiet zone included
 code.save_svg("scales.svg");                       // a viewBox only: the size it's shown at
 code.save_png("invoice.png", 8);                   // 8 pixels a module, 1 bit a pixel
 const std::string svg = code.svg(), png = code.png();
 std::cout << code.text();                          // in a terminal, readable by a phone
 
-const auto bytes = sc::qr::code::binary(data, sc::qr::correction::high);
+const auto bytes = sc::qrencode::code::binary(data, sc::qrencode::correction::high);
 code.version(); code.size(); code.dark(x, y);      // 1 to 40, modules a side, one module
 ```
 
@@ -74,7 +74,7 @@ shows a code in the terminal, or writes it as SVG or PNG.
 
 <!-- sc-example: examples/sc-qrencode-demo.cpp -->
 ```cpp
-const sc::qr::code code{args.as<std::string>("text"), level->second};
+const sc::qrencode::code code{args.as<std::string>("text"), level->second};
 const auto svg = args.as<std::string>("svg"), png = args.as<std::string>("png");
 if (!svg.empty()) {
     const auto mm = args.as<double>("size");

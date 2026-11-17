@@ -21,7 +21,7 @@
 namespace {
     // ASCII: two characters a module, a line a row, the quiet zone around. inverted: light
     // modules drawn instead of dark ones.
-    std::string ascii(const sc::qr::code &code, const int margin, const bool inverted) {
+    std::string ascii(const sc::qrencode::code &code, const int margin, const bool inverted) {
         std::string out;
         for (int y = -margin; y < code.size() + margin; ++y) {
             for (int x = -margin; x < code.size() + margin; ++x) out += code.dark(x, y) != inverted ? "##" : "  ";
@@ -32,7 +32,7 @@ namespace {
 
     // UTF8i: two rows a line in half blocks, the dark modules drawn (for light terminals); UTF8,
     // the light ones, is code.text().
-    std::string utf8_dark(const sc::qr::code &code, const int margin) {
+    std::string utf8_dark(const sc::qrencode::code &code, const int margin) {
         std::string out;
         for (int y = -margin; y < code.size() + margin; y += 2) {
             for (int x = -margin; x < code.size() + margin; ++x) {
@@ -104,11 +104,11 @@ int main(int argc, char **argv) {
         }
         if (data.empty()) throw std::runtime_error("no data to encode");
 
-        static const std::map<std::string, sc::qr::correction> levels{{"L", sc::qr::correction::low}, {"M", sc::qr::correction::medium},
-                                                                      {"Q", sc::qr::correction::quartile}, {"H", sc::qr::correction::high}};
+        static const std::map<std::string, sc::qrencode::correction> levels{{"L", sc::qrencode::correction::low}, {"M", sc::qrencode::correction::medium},
+                                                                      {"Q", sc::qrencode::correction::quartile}, {"H", sc::qrencode::correction::high}};
         const auto level = levels.at(args.as<std::string>("level"));
         const bool bytes = args.as<bool>("8bit") || data.find('\0') != std::string::npos;
-        const auto code = bytes ? sc::qr::code::binary(data, level) : sc::qr::code{data, level};
+        const auto code = bytes ? sc::qrencode::code::binary(data, level) : sc::qrencode::code{data, level};
 
         const auto margin = args.as<int>("margin"), size = args.as<int>("size"), dpi = args.as<int>("dpi");
         if (margin < 0 || margin > 100) throw std::invalid_argument("--margin is 0 to 100");

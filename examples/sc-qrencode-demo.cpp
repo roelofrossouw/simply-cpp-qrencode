@@ -24,13 +24,13 @@ int main(int argc, char **argv) {
         {"positional", {
             {"text", {{"default", "https://example.com"}, {"help", "what the code holds"}}}}}}};
     try {
-        const std::map<std::string, sc::qr::correction> levels{{"low", sc::qr::correction::low}, {"medium", sc::qr::correction::medium},
-                                                               {"quartile", sc::qr::correction::quartile}, {"high", sc::qr::correction::high}};
+        const std::map<std::string, sc::qrencode::correction> levels{{"low", sc::qrencode::correction::low}, {"medium", sc::qrencode::correction::medium},
+                                                               {"quartile", sc::qrencode::correction::quartile}, {"high", sc::qrencode::correction::high}};
         const auto level = levels.find(args.as<std::string>("correction"));
         if (level == levels.end()) throw std::invalid_argument("--correction is low, medium, quartile or high");
 
         // [readme]
-        const sc::qr::code code{args.as<std::string>("text"), level->second};
+        const sc::qrencode::code code{args.as<std::string>("text"), level->second};
         const auto svg = args.as<std::string>("svg"), png = args.as<std::string>("png");
         if (!svg.empty()) {
             const auto mm = args.as<double>("size");

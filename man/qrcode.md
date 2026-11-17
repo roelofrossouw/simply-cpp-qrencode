@@ -40,7 +40,7 @@ size (the PNG has no resolution in it). An SVG's dark modules are one path, so i
 
 It is called qrcode so that it can be installed beside libqrencode's qrencode (Ubuntu's qrencode package).
 
-For C++ and PHP programs, sc-qrencode's sc::qr::code and sc-phplib's SC\QrCode do the same without starting a program.
+For C++ and PHP programs, sc-qrencode's sc::qrencode::code and sc-phplib's SC\QrCode do the same without starting a program.
 
 # SEE ALSO
 https://github.com/roelofrossouw/simply-cpp-qrencode

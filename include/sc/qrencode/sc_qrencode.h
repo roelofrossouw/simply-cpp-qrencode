@@ -11,14 +11,14 @@
 // QR codes (ISO/IEC 18004) made from text or bytes, written as SVG or PNG with no image library:
 // a QR code is a grid of squares, so both are written directly (the PNG with zlib).
 //
-//     const sc::qr::code code{"https://example.com/invoice/123"};
+//     const sc::qrencode::code code{"https://example.com/invoice/123"};
 //     code.save_svg("invoice.svg", sc::dist::mm(30));  // or a viewBox only, to scale where it's shown
 //     code.save_png("invoice.png", 8);                 // 8 pixels a module
 //
 // The encoding is Project Nayuki's QR Code generator (MIT), compiled in.
 //
 // TODO: reading QR codes from images, as a module of its own (sc-qrdecode), so this one stays light.
-namespace sc::qr {
+namespace sc::qrencode {
     // How much of a code may be damaged and still read: about 7%, 15%, 25% or 30%.
     enum class correction { low, medium, quartile, high };
 

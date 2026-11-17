@@ -9,7 +9,7 @@
 #include <fstream>
 #include <stdexcept>
 
-namespace sc::qr {
+namespace sc::qrencode {
     namespace {
         using qrcodegen::QrCode;
 

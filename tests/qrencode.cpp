@@ -34,8 +34,8 @@ namespace {
 }
 
 int main() {
-    using sc::qr::code;
-    using sc::qr::correction;
+    using sc::qrencode::code;
+    using sc::qrencode::correction;
     using std::string;
 
     SECTION("Version and correction: the smallest version, then the best correction that fits");
