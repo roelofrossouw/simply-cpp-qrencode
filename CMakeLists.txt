@@ -9,7 +9,7 @@ get_sc_version()
 message(STATUS "SimplyCPP ${SC_MODULE} Version: ${SC_VERSION}")
 
 # sc::distance for an SVG's size; sc::params' man pages (1.24.0) for qrcode; zlib for the PNG's pixels.
-find_or_install_package(sc-core simply-cpp-dev simply-cpp 2.2.0)
+find_or_install_package(sc-core simply-cpp-dev simply-cpp 3.0.0)
 find_or_install_package(ZLIB zlib1g-dev zlib)
 
 set(SOURCE_OBJECTS)
@@ -50,4 +50,4 @@ sc_program_info(qrcode)
 install(TARGETS qrcode RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtime)
 sc_man_page(qrcode EXTRA ${CMAKE_CURRENT_SOURCE_DIR}/man/qrcode.md COMPONENT runtime)
 
-package_sc_module(DEV_DEPENDS "simply-cpp-dev (>= 1.24.0~)" zlib1g-dev)
+package_sc_module(DEV_DEPENDS "simply-cpp-dev (>= 3.0.0~)" zlib1g-dev)
