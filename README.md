@@ -8,7 +8,7 @@ zlib are all it needs.
 **Documentation:** the [simply-cpp wiki](https://github.com/roelofrossouw/simply-cpp/wiki) has a [QR codes guide](https://github.com/roelofrossouw/simply-cpp/wiki/QR-Codes) and the [sc-qrencode reference](https://github.com/roelofrossouw/simply-cpp/wiki/Reference-sc-qrencode).
 
 ```cpp
-#include <sc_qrencode.h>
+#include <sc/qrencode/sc_qrencode.h>
 
 const sc::qr::code code{"https://example.com/invoice/123"};
 code.save_svg("invoice.svg", sc::dist::mm(30));    // 30 mm square, quiet zone included

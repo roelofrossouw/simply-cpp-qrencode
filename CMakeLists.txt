@@ -9,7 +9,7 @@ get_sc_version()
 message(STATUS "SimplyCPP ${SC_MODULE} Version: ${SC_VERSION}")
 
 # sc::distance for an SVG's size; sc::params' man pages (1.24.0) for qrcode; zlib for the PNG's pixels.
-find_or_install_package(sc-core simply-cpp-dev simply-cpp 1.24.0)
+find_or_install_package(sc-core simply-cpp-dev simply-cpp 2.2.0)
 find_or_install_package(ZLIB zlib1g-dev zlib)
 
 set(SOURCE_OBJECTS)

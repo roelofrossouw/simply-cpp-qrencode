@@ -4,8 +4,8 @@
 //     sc-qrencode-demo "WIFI:S:Home;T:WPA;P:secret;;" --svg wifi.svg --size 40
 //     sc-qrencode-demo "Hello" --png hello.png --scale 10 --correction high
 
-#include <sc_qrencode.h>
-#include <params.h>
+#include <sc/qrencode/sc_qrencode.h>
+#include <sc/core/params.h>
 
 #include <iostream>
 #include <map>

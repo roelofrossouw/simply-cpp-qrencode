@@ -1,4 +1,4 @@
-#include "sc_qrencode.h"
+#include <sc/qrencode/sc_qrencode.h>
 
 #include "qrcodegen.hpp" // its namespace renamed sc_qrcodegen by the build, so another copy can't clash
 

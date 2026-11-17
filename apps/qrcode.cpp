@@ -3,9 +3,9 @@
 // terminal unless told to write a file, whose name gives the type; with nothing to encode it shows
 // its help.
 
-#include <sc_qrencode.h>
+#include <sc/qrencode/sc_qrencode.h>
 
-#include <params.h>
+#include <sc/core/params.h>
 
 #include <algorithm>
 #include <cctype>
