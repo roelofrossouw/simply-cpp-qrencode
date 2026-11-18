@@ -18,12 +18,12 @@ set(SOURCE_LINK_LIBRARIES)
 
 # Project Nayuki's QR Code generator (MIT, third_party/qrcodegen, from commit 3c6d0b3cefb4e049dc337e82237c9644399716a8), compiled in.
 # Its namespace becomes sc_qrcodegen, so a program with its own copy doesn't clash with ours.
-add_sc_object(sc_qrencode
+add_sc_object(qrencode
         SOURCES third_party/qrcodegen/qrcodegen.cpp third_party/qrcodegen/qrcodegen.hpp
         INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/qrcodegen
         LINK_LIBRARIES sc::sc-core ZLIB::ZLIB
         PUBLIC_LINK_LIBRARIES sc::sc-core ZLIB::ZLIB)
-target_compile_definitions(sc-obj-sc_qrencode PRIVATE qrcodegen=sc_qrcodegen)
+target_compile_definitions(sc-obj-qrencode PRIVATE qrcodegen=sc_qrcodegen)
 
 add_sc_libraries(DESCRIPTION "simply-cpp QR codes from text or bytes, as SVG or PNG, with no image library")
 target_compile_features(sc-qrencode PUBLIC cxx_std_20)

@@ -3,7 +3,7 @@
 // terminal unless told to write a file, whose name gives the type; with nothing to encode it shows
 // its help.
 
-#include <sc/qrencode/sc_qrencode.h>
+#include <sc/qrencode/qrencode.h>
 
 #include <sc/core/params.h>
 

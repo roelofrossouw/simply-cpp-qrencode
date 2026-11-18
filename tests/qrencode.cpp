@@ -1,6 +1,6 @@
 // QR codes: versions and correction chosen, the finder patterns, limits, the SVG's path and size,
 // the PNG's structure and every one of its pixels against the modules, the terminal text.
-#include <sc/qrencode/sc_qrencode.h>
+#include <sc/qrencode/qrencode.h>
 #include <sc_test.h>
 
 #include <zlib.h>
