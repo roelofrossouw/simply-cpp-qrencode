@@ -9,7 +9,8 @@ get_sc_version()
 message(STATUS "SimplyCPP ${SC_MODULE} Version: ${SC_VERSION}")
 
 # sc::distance for an SVG's size; sc::params' man pages (1.24.0) for qrcode; zlib for the PNG's pixels.
-find_or_install_package(sc-core simply-cpp-dev simply-cpp 3.0.0)
+find_or_install_package(sc-core simply-cpp-dev simply-cpp 4.0.0)
+find_or_install_package(sc-geometry simply-cpp-geometry-dev simply-cpp-geometry 1.0.0)
 find_or_install_package(ZLIB zlib1g-dev zlib)
 
 set(SOURCE_OBJECTS)
@@ -21,8 +22,8 @@ set(SOURCE_LINK_LIBRARIES)
 add_sc_object(qrencode
         SOURCES third_party/qrcodegen/qrcodegen.cpp third_party/qrcodegen/qrcodegen.hpp
         INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/third_party/qrcodegen
-        LINK_LIBRARIES sc::sc-core ZLIB::ZLIB
-        PUBLIC_LINK_LIBRARIES sc::sc-core ZLIB::ZLIB)
+        LINK_LIBRARIES sc::sc-core sc::sc-geometry ZLIB::ZLIB
+        PUBLIC_LINK_LIBRARIES sc::sc-core sc::sc-geometry ZLIB::ZLIB)
 target_compile_definitions(sc-obj-qrencode PRIVATE qrcodegen=sc_qrcodegen)
 
 add_sc_libraries(DESCRIPTION "simply-cpp QR codes from text or bytes, as SVG or PNG, with no image library")
@@ -50,4 +51,4 @@ sc_program_info(qrcode)
 install(TARGETS qrcode RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT tools)
 sc_man_page(qrcode EXTRA ${CMAKE_CURRENT_SOURCE_DIR}/man/qrcode.md COMPONENT tools)
 
-package_sc_module(DEV_DEPENDS "simply-cpp-dev (>= 3.0.0~)" zlib1g-dev)
+package_sc_module(DEV_DEPENDS "simply-cpp-dev (>= 4.0.0~)" "simply-cpp-geometry-dev (>= 1.0.0~)" zlib1g-dev)

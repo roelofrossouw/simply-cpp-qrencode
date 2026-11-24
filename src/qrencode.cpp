@@ -115,7 +115,7 @@ namespace sc::qrencode {
             out += R"( width=")" + length + R"(" height=")" + length + '"';
         }
         // The light square in the viewBox's own units, not 100%: readers that don't resolve percentages
-        // (sc::drawing's) would take it as 100 units.
+        // (sc::graphics::drawing's) would take it as 100 units.
         out += R"( shape-rendering="crispEdges"><rect width=")" + std::to_string(whole) + R"(" height=")" + std::to_string(whole) +
                R"(" fill="#fff"/><path fill="#000" d=")";
         // Each row's runs of dark modules as rectangles: "M4,4h7v1h-7z".

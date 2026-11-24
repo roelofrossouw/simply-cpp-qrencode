@@ -27,7 +27,7 @@ code.version(); code.size(); code.dark(x, y);      // 1 to 40, modules a side, o
   about 7, 15, 25 or 30% of the code may be damaged). Too much data (2953 bytes
   at `low`) throws `std::length_error`.
 - The SVG is one path on a white square, with `shape-rendering="crispEdges"`;
-  it's an `sc::drawing` too through sc-graphics' SVG reader, for a canvas or a PDF.
+  it's an `sc::graphics::drawing` too through sc-graphics' SVG reader, for a canvas or a PDF.
 - The PNG is black and white at 1 bit a pixel, each module an exact block of
   pixels: a few hundred bytes for a link.
 - Both keep a quiet zone of 4 light modules around the code, as the standard

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sc/core/distance.h>
+#include <sc/geometry/distance.h>
 
 #include <filesystem>
 #include <optional>
